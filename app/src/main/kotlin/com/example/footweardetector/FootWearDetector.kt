@@ -102,7 +102,7 @@ class FootWearDetector(private val context: Context) {
         val isTransposed = data.size > data[0].size
         val numAnchors = if (isTransposed) data.size else data[0].size
         val numClasses = if (isTransposed) data[0].size - 4 else data.size - 4
-        val confidenceThreshold = 0.05f 
+        val confidenceThreshold = 0.4f 
 
         var highestScoreFound = 0f
         for (i in 0 until numAnchors) {
@@ -125,10 +125,10 @@ class FootWearDetector(private val context: Context) {
                 val h = if (isTransposed) data[i][3] else data[3][i]
 
                 // Final normalized coordinates relative to original image
-                val normX1 = (cx - w / 2 - padLeft) / newWidth
-                val normY1 = (cy - h / 2 - padTop) / newHeight
-                val normX2 = (cx + w / 2 - padLeft) / newWidth
-                val normY2 = (cy + h / 2 - padTop) / newHeight
+                val normX1 = (cx - w / 2 - padLeft) / (modelInputSize - 2 * padLeft)
+                val normY1 = (cy - h / 2 - padTop) / (modelInputSize - 2 * padTop)
+                val normX2 = (cx + w / 2 - padLeft) / (modelInputSize - 2 * padLeft)
+                val normY2 = (cy + h / 2 - padTop) / (modelInputSize - 2 * padTop)
 
                 detections.add(
                     Detection(
