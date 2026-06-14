@@ -1,1 +1,3 @@
-<resources><string name="app_name">Shoe Detector</string></resources>
+<resources>
+    <string name="app_name">Footwear Detector</string>
+</resources>
