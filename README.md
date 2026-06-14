@@ -1,0 +1,2 @@
+# shoe-detector
+# footwear-detector
