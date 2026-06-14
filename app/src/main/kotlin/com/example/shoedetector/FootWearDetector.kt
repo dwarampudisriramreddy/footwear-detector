@@ -31,7 +31,7 @@ class FootWearDetector(private val context: Context) {
     )
 
     init {
-        val modelBytes = context.assets.open("foot_wear.onnx").readBytes()
+        val modelBytes = context.assets.open("footwear.onnx").readBytes()
         ortSession = ortEnv.createSession(modelBytes)
         inputName = ortSession.inputNames.iterator().next()
         outputName = ortSession.outputNames.iterator().next()
