@@ -37,8 +37,8 @@ class FootWearDetector(private val context: Context) {
         outputName = ortSession.outputNames.iterator().next()
         
         // Auto-detect input size from model metadata
-        val inputShape = ortSession.inputInfo[inputName]?.info?.asArray()?.get(2) ?: 640L
-        modelInputSize = inputShape.toInt()
+        val inputShape = ortSession.inputInfo[inputName]?.info as ai.onnxruntime.TensorInfo
+        modelInputSize = inputShape.shape[2].toInt()
         
         Log.d("FootWearDetector", "Session created. Input: $inputName ($modelInputSize x $modelInputSize), Output: $outputName")
     }
