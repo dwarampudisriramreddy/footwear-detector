@@ -1,4 +1,4 @@
-package com.example.shoedetector
+package com.example.footweardetector
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,7 +15,7 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.example.shoedetector.databinding.ActivityMainBinding
+import com.example.footweardetector.databinding.ActivityMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

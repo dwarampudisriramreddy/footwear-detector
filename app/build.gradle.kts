@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.shoedetector"
+    namespace = "com.example.footweardetector"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.shoedetector"
+        applicationId = "com.example.footweardetector"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

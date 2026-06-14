@@ -1,4 +1,4 @@
-package com.example.shoedetector
+package com.example.footweardetector
 
 import android.content.Context
 import android.graphics.Canvas
