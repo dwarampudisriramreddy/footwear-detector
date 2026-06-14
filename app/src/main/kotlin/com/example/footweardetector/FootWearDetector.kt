@@ -124,11 +124,18 @@ class FootWearDetector(private val context: Context) {
                 val w = if (isTransposed) data[i][2] else data[2][i]
                 val h = if (isTransposed) data[i][3] else data[3][i]
 
-                // Final normalized coordinates relative to original image
-                val normX1 = (cx - w / 2 - padLeft) / (modelInputSize - 2 * padLeft)
-                val normY1 = (cy - h / 2 - padTop) / (modelInputSize - 2 * padTop)
-                val normX2 = (cx + w / 2 - padLeft) / (modelInputSize - 2 * padLeft)
-                val normY2 = (cy + h / 2 - padTop) / (modelInputSize - 2 * padTop)
+                // Coordinates are in modelInputSize (e.g. 640) range.
+                // 1. Normalize to 0-1 relative to model input
+                val x1 = (cx - w / 2) / modelInputSize
+                val y1 = (cy - h / 2) / modelInputSize
+                val x2 = (cx + w / 2) / modelInputSize
+                val y2 = (cy + h / 2) / modelInputSize
+
+                // 2. Map to original image, removing letterbox padding
+                val normX1 = (x1 * modelInputSize - padLeft) / (modelInputSize - 2 * padLeft)
+                val normY1 = (y1 * modelInputSize - padTop) / (modelInputSize - 2 * padTop)
+                val normX2 = (x2 * modelInputSize - padLeft) / (modelInputSize - 2 * padLeft)
+                val normY2 = (y2 * modelInputSize - padTop) / (modelInputSize - 2 * padTop)
 
                 detections.add(
                     Detection(
