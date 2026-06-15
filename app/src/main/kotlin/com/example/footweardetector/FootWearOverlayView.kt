@@ -45,14 +45,25 @@ class FootWearOverlayView(context: Context, attrs: AttributeSet?) : View(context
             
             val text = "${detection.label} ${(detection.confidence * 100).toInt()}%"
             val textWidth = textPaint.measureText(text)
+            
+            var textY = y1 - 10f
+            var bgTop = y1 - 50f
+            var bgBottom = y1
+            
+            if (bgTop < 0) {
+                bgTop = y1
+                bgBottom = y1 + 50f
+                textY = y1 + 40f
+            }
+
             canvas.drawRect(
                 x1,
-                y1 - 50f,
+                bgTop,
                 x1 + textWidth + 10f,
-                y1,
+                bgBottom,
                 textBackgroundPaint
             )
-            canvas.drawText(text, x1 + 5f, y1 - 10f, textPaint)
+            canvas.drawText(text, x1 + 5f, textY, textPaint)
         }
     }
 }

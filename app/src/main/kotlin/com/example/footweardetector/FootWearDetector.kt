@@ -119,11 +119,11 @@ class FootWearDetector(private val context: Context) {
             if (maxClassScore > highestScoreFound) highestScoreFound = maxClassScore
 
             if (maxClassScore > confidenceThreshold) {
-                // Assuming model output is [y, x, h, w] instead of [x, y, w, h]
-                val cy = if (isTransposed) data[i][0] else data[0][i]
-                val cx = if (isTransposed) data[i][1] else data[1][i]
-                val h = if (isTransposed) data[i][2] else data[2][i]
-                val w = if (isTransposed) data[i][3] else data[3][i]
+                // Assuming model output is [cx, cy, w, h]
+                val cx = if (isTransposed) data[i][0] else data[0][i]
+                val cy = if (isTransposed) data[i][1] else data[1][i]
+                val w = if (isTransposed) data[i][2] else data[2][i]
+                val h = if (isTransposed) data[i][3] else data[3][i]
 
                 // Coordinates are in modelInputSize (e.g. 640) range.
                 // 1. Normalize to 0-1 relative to model input
