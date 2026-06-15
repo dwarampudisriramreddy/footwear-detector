@@ -1,30 +1,35 @@
 package com.example.footweardetector
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 
 class FootWearOverlayView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
     private var detections: List<FootWearDetector.Detection> = emptyList()
+    
     private val boxPaint = Paint().apply {
-        color = Color.RED
+        color = Color.parseColor("#00E676") // Vibrant Green
         style = Paint.Style.STROKE
-        strokeWidth = 8f
+        strokeWidth = 10f
+        strokeCap = Paint.Cap.ROUND
+        strokeJoin = Paint.Join.ROUND
+        isAntiAlias = true
     }
+    
     private val textPaint = Paint().apply {
         color = Color.WHITE
-        textSize = 40f
+        textSize = 48f
+        typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         style = Paint.Style.FILL
+        isAntiAlias = true
     }
+    
     private val textBackgroundPaint = Paint().apply {
-        color = Color.BLACK
+        color = Color.parseColor("#CC00E676") // Semi-transparent matching green
         style = Paint.Style.FILL
-        alpha = 160
+        isAntiAlias = true
     }
 
     fun setDetections(results: List<FootWearDetector.Detection>) {
@@ -40,30 +45,42 @@ class FootWearOverlayView(context: Context, attrs: AttributeSet?) : View(context
             val x2 = detection.x2 * width
             val y2 = detection.y2 * height
 
+            // Draw bounding box with rounded corners
             val rect = RectF(x1, y1, x2, y2)
-            canvas.drawRect(rect, boxPaint)
+            canvas.drawRoundRect(rect, 24f, 24f, boxPaint)
             
-            val text = "${detection.label} ${(detection.confidence * 100).toInt()}%"
+            // Format label text
+            val labelStr = detection.label.replaceFirstChar { it.uppercase() }
+            val text = "$labelStr ${(detection.confidence * 100).toInt()}%"
             val textWidth = textPaint.measureText(text)
             
-            var textY = y1 - 10f
-            var bgTop = y1 - 50f
-            var bgBottom = y1
+            // Calculate pill background coordinates
+            val paddingX = 20f
+            val paddingY = 16f
+            val textHeight = textPaint.descent() - textPaint.ascent()
             
+            var bgTop = y1 - textHeight - (paddingY * 2) - 10f
+            var bgBottom = y1 - 10f
+            var textY = y1 - paddingY - textPaint.descent() - 10f
+            
+            // Adjust if drawing outside top edge
             if (bgTop < 0) {
-                bgTop = y1
-                bgBottom = y1 + 50f
-                textY = y1 + 40f
+                bgTop = y1 + 10f
+                bgBottom = bgTop + textHeight + (paddingY * 2)
+                textY = bgBottom - paddingY - textPaint.descent()
             }
 
-            canvas.drawRect(
+            // Draw pill background
+            val textBgRect = RectF(
                 x1,
                 bgTop,
-                x1 + textWidth + 10f,
-                bgBottom,
-                textBackgroundPaint
+                x1 + textWidth + (paddingX * 2),
+                bgBottom
             )
-            canvas.drawText(text, x1 + 5f, textY, textPaint)
+            canvas.drawRoundRect(textBgRect, 16f, 16f, textBackgroundPaint)
+            
+            // Draw text
+            canvas.drawText(text, x1 + paddingX, textY, textPaint)
         }
     }
 }
